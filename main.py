@@ -15,8 +15,10 @@ screen = pygame.display.set_mode((Settings.Width, Settings.Height))
 running = True
 clock = pygame.time.Clock()
 
-playerHpImage = pygame.image.load(os.path.join("Images", "PlayerHp.jpg")).convert()
+playerHpImage = pygame.image.load(os.path.join(".\Images", "PlayerHp.jpg")).convert()
 playerHpImage_mini = pygame.transform.scale(playerHpImage, (25, 19))
+playerHpImage_mini.set_colorkey((255,255,255))
+pygame.display.set_icon(playerHpImage_mini)
 
 allSprites = pygame.sprite.Group()
 playerMissiles = pygame.sprite.Group()
@@ -34,6 +36,7 @@ def draw_player_health(surface, hp, img, x, y):
         img_rect = img.get_rect()
         img_rect.x = x + 30*i
         img_rect.y = y
+        surface.blit(img, img_rect)
 
 while running:
     count += 1
@@ -63,6 +66,6 @@ while running:
     #Render Graphics
     screen.fill((255,255,255))
     allSprites.draw(screen)
-    draw_player_health(screen, player.Hp, playerHpImage_mini, Settings.Width - 100, Settings.Height)
+    draw_player_health(screen, player.Hp, playerHpImage_mini, Settings.Height - 100, 50)
     pygame.display.update()
 
