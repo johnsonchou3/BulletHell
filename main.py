@@ -1,3 +1,5 @@
+import os
+
 import pygame
 
 from Sprite.Boss import Boss
@@ -12,6 +14,8 @@ screen = pygame.display.set_mode((Settings.Width, Settings.Height))
 running = True
 clock = pygame.time.Clock()
 
+hpImage = pygame.image.load(os.path.join("Images", "PlayerHp.jpg")).convert()
+
 allSprites = pygame.sprite.Group()
 playerMissles = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
@@ -20,6 +24,14 @@ boss = Boss()
 allSprites.add(player)
 allSprites.add(boss)
 enemies.add(boss)
+
+
+def draw_player_health(surface, hp, img, x, y):
+    for i in range(hp):
+        img_rect = img.get_rect()
+        img_rect.x = x + 30*i
+        img_rect.y = y
+
 while running:
     count += 1
     clock.tick(FPS)
@@ -36,13 +48,14 @@ while running:
     # Update Info
     allSprites.update()
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissles, False, True)
-    for hit in hitsOnBoss:
-        boss.Hp -= 1
-        if boss.Hp == 0:
-            running = False
+    boss.Hp -= len(hitsOnBoss)
+    if boss.Hp == 0:
+        running = False
+
 
     #Render Graphics
     screen.fill((255,255,255))
     allSprites.draw(screen)
+    draw_player_health(screen, player.Hp, hpImage, Settings.Width - 100, Settings.Height)
     pygame.display.update()
 
