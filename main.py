@@ -39,6 +39,17 @@ def draw_player_health(surface, hp, img, x, y):
         img_rect.y = y
         surface.blit(img, img_rect)
 
+def draw_boss_health(surf, hp, maxHp, x, y):
+    if hp < 0:
+        hp = 0
+    BAR_LENGTH = 100
+    BAR_HEIGHT = 10
+    fill = (hp/maxHp)*BAR_LENGTH
+    outline_rect = pygame.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
+    fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
+    pygame.draw.rect(surf, (0,255,0), fill_rect)
+    pygame.draw.rect(surf, (255,255,255), outline_rect, 2)
+
 while running:
     count += 1
     clock.tick(FPS)
@@ -63,7 +74,7 @@ while running:
     # Update Info
     allSprites.update()
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
-    boss.Hp -= len(hitsOnBoss)
+    boss.curHp -= len(hitsOnBoss)
     hitOnPlayer = pygame.sprite.spritecollide(player, enemyMissiles, True)
     print(player.Hp)
     player.Hp -= len(hitOnPlayer)
@@ -73,9 +84,10 @@ while running:
     screen.fill((255,255,255))
     allSprites.draw(screen)
     draw_player_health(screen, player.Hp, playerHpImage_mini, Settings.Height - 100, 50)
+    draw_boss_health(screen, boss.curHp, boss.maxHp, 5, 15)
     pygame.display.update()
 
     # See if game ends
-    if boss.Hp == 0 or player.Hp == 0:
+    if boss.curHp == 0 or player.Hp == 0:
         running = False
 
