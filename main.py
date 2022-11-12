@@ -85,9 +85,8 @@ while running:
     
     # changes num of missiles the boss shoots at a time
     if count % 300 == 0:
-        boss.missile_count = randint(2, 6)
+        boss.change_missile_count()
 
-    print(count)
     # Update Info
     allSprites.update()
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
