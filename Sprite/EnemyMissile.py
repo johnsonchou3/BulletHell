@@ -4,13 +4,13 @@ from Settings import Settings
 
 
 class EnemyMissile(pygame.sprite.Sprite):
-    def __init__(self, x, y, radian, speed):
+    def __init__(self, x, y, degree, speed):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((5,5))
         self.image.fill((100,100,0))
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
-        self.x_velocity, self.y_velocity = self.calculate_xy_velocity(radian, speed)
+        self.x_velocity, self.y_velocity = self.calculate_xy_velocity(degree, speed)
         self.settings = Settings()
 
     def update(self):
@@ -21,7 +21,8 @@ class EnemyMissile(pygame.sprite.Sprite):
         self.rect.x += self.x_velocity
         self.rect.y += self.y_velocity
 
-    def calculate_xy_velocity(self, radian, speed):
-            return math.ceil(speed*math.cos(radian)), math.ceil(speed*math.sin(radian))
+    def calculate_xy_velocity(self, degree, speed):
+        radian = math.radians(degree)
+        return round(speed*math.cos(radian)), round(speed*math.sin(radian))
     
         
