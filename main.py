@@ -67,11 +67,13 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        # elif event.type == pygame.KEYDOWN:
+        #   if event.key == pygame.K_SPACE:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z:
                 player.use_bomb(enemyMissiles)
-    boss.shift_shooting_direction(0.05*dt)
 
+    boss.shift_shooting_direction(0.1*clock.get_time())
     if count % 4 == 0:
         missile = player.shoot()
         allSprites.add(missile)
@@ -83,8 +85,9 @@ while running:
     
     # changes num of missiles the boss shoots at a time
     if count % 300 == 0:
-        boss.missile_count = randint(2, 8)
+        boss.missile_count = randint(2, 6)
 
+    print(count)
     # Update Info
     allSprites.update()
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
