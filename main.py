@@ -2,7 +2,7 @@ from re import S
 import pygame
 
 from Sprite.Boss import Boss
-from Sprite.EnemyMissles import EnemyMissle
+from Sprite.EnemyMissile import EnemyMissile
 from Sprite.Player import Player
 from Settings import Settings
 pygame.init()
@@ -15,15 +15,14 @@ running = True
 clock = pygame.time.Clock()
 
 allSprites = pygame.sprite.Group()
-playerMissles = pygame.sprite.Group()
+playerMissiles = pygame.sprite.Group()
+enemyMissiles = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 player = Player()
 boss = Boss()
-enemyMissle = EnemyMissle(50, 50, 1.5, 3)
 
 allSprites.add(player)
 allSprites.add(boss)
-allSprites.add(enemyMissle)
 
 enemies.add(boss)
 while running:
@@ -36,12 +35,17 @@ while running:
         # elif event.type == pygame.KEYDOWN:
         #   if event.key == pygame.K_SPACE:
     if count % 4 == 0:
-        missle = player.shoot()
-        allSprites.add(missle)
-        playerMissles.add(missle)
+        missile = player.shoot()
+        allSprites.add(missile)
+        playerMissiles.add(missile)
+
+        boss_missiles = boss.shoot()
+        allSprites.add(boss_missiles)
+        enemyMissiles.add(boss_missiles)
+
     # Update Info
     allSprites.update()
-    hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissles, False, True)
+    hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
     for hit in hitsOnBoss:
         boss.Hp -= 1
         if boss.Hp == 0:

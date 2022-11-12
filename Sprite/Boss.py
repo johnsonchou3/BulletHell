@@ -1,5 +1,7 @@
 import pygame
+import math
 from Settings import Settings
+from Sprite.EnemyMissile import EnemyMissile
 
 
 class Boss(pygame.sprite.Sprite):
@@ -13,3 +15,12 @@ class Boss(pygame.sprite.Sprite):
         self.settings = Settings()
         self.Hp = 10
 
+    def shoot(self):
+        missiles = []
+
+        for i in range(4):
+            missiles.append(EnemyMissile(self.rect.centerx, self.rect.centery, math.pi*i*0.5, 3))
+        return missiles
+    
+    def rotate(self):
+        return
