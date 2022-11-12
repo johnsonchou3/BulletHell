@@ -16,3 +16,4 @@ class PlayerMissile(pygame.sprite.Sprite):
         self.rect.y += self.yVelocity
         if self.rect.bottom < 0:
             self.kill()
+
