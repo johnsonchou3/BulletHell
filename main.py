@@ -1,5 +1,5 @@
 import os
-from re import S
+from random import randint
 import pygame
 
 from Sprite.Boss import Boss
@@ -52,16 +52,16 @@ def draw_boss_health(surf, hp, maxHp, x, y):
 
 while running:
     count += 1
-    clock.tick(FPS)
+    dt = clock.tick(FPS)
     # Get Input
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         # elif event.type == pygame.KEYDOWN:
         #   if event.key == pygame.K_SPACE:
-
-    boss.shift_shooting_direction(1)
     
+    boss.shift_shooting_direction(0.05*dt)
+
     if count % 4 == 0:
         missile = player.shoot()
         allSprites.add(missile)
@@ -70,15 +70,18 @@ while running:
         boss_missiles = boss.shoot()
         allSprites.add(boss_missiles)
         enemyMissiles.add(boss_missiles)
+    
+    # changes num of missiles the boss shoots at a time
+    if count % 300 == 0:
+        boss.missile_count = randint(2, 8)
 
+    print(count)
     # Update Info
     allSprites.update()
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
     boss.curHp -= len(hitsOnBoss)
     hitOnPlayer = pygame.sprite.spritecollide(player, enemyMissiles, True)
-    print(player.Hp)
     player.Hp -= len(hitOnPlayer)
-    print(player.Hp)
 
     #Render Graphics
     screen.fill((255,255,255))
