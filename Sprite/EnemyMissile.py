@@ -7,7 +7,7 @@ class EnemyMissile(pygame.sprite.Sprite):
     def __init__(self, x, y, degree, speed):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((5,5))
-        self.image.fill((100,100,0))
+        self.image.fill((200,0,0))
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
         self.x_velocity, self.y_velocity = self.calculate_xy_velocity(degree, speed)

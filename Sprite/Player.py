@@ -6,7 +6,7 @@ from Sprite.PlayerMissile import PlayerMissile
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((50,40))
+        self.image = pygame.Surface((10,10))
         self.image.fill((0,255,0))
         self.rect = self.image.get_rect()
         self.rect.center = (500,500)
@@ -34,3 +34,6 @@ class Player(pygame.sprite.Sprite):
             for missles in enemyMissles:
                 missles.kill()
             self.BombCount -= 1
+            return True
+        else:
+            return False
