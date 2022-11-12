@@ -1,3 +1,4 @@
+import os
 from re import S
 import pygame
 
@@ -13,6 +14,9 @@ pygame.display.set_caption("BulletHell")
 screen = pygame.display.set_mode((Settings.Width, Settings.Height))
 running = True
 clock = pygame.time.Clock()
+
+playerHpImage = pygame.image.load(os.path.join("Images", "PlayerHp.jpg")).convert()
+playerHpImage_mini = pygame.transform.scale(playerHpImage, (25, 19))
 
 allSprites = pygame.sprite.Group()
 playerMissiles = pygame.sprite.Group()
@@ -51,7 +55,7 @@ while running:
 
     # Update Info
     allSprites.update()
-    hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissles, False, True)
+    hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
     boss.Hp -= len(hitsOnBoss)
     if boss.Hp == 0:
         running = False
@@ -59,6 +63,6 @@ while running:
     #Render Graphics
     screen.fill((255,255,255))
     allSprites.draw(screen)
-    draw_player_health(screen, player.Hp, hpImage, Settings.Width - 100, Settings.Height)
+    draw_player_health(screen, player.Hp, playerHpImage_mini, Settings.Width - 100, Settings.Height)
     pygame.display.update()
 
