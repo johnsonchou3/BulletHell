@@ -36,7 +36,6 @@ class Player(pygame.sprite.Sprite):
                 self.rect.y -= 2
             else:
                 self.rect.y -= 5
-
     def shoot(self):
         missle = PlayerMissile(self.rect.centerx, self.rect.top)
         return missle

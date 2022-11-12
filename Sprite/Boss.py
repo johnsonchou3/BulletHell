@@ -1,3 +1,4 @@
+import os
 from random import randint
 import pygame
 import math
@@ -25,7 +26,7 @@ class Boss(pygame.sprite.Sprite):
         missiles_angle_offset = 360 / self.missile_count
         for i in range(self.missile_count):
             degree = i * missiles_angle_offset + self.shooting_direction
-            missiles.append(EnemyMissile(self.rect.centerx, self.rect.centery, degree, 5))
+            missiles.append(EnemyMissile(pygame.image.load(os.path.join("Image", "MissileRed.png")).convert(), self.rect.centerx, self.rect.centery, degree, 5))
         return missiles
     
     def shift_shooting_direction(self, degree):
@@ -39,5 +40,6 @@ class Boss(pygame.sprite.Sprite):
         missiles = []
         for i in range(360):
             degree = i
-            missiles.append(EnemyMissile(self.rect.centerx, self.rect.centery, degree, 2))
+            missiles.append(EnemyMissile(pygame.image.load(os.path.join("Image", "MissileGreen.png")).convert(), self.rect.centerx, self.rect.centery, degree, 2))
         return missiles
+

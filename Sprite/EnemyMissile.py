@@ -6,9 +6,8 @@ from Settings import Settings
 
 
 class EnemyMissile(pygame.sprite.Sprite):
-    def __init__(self, x, y, degree, speed):
+    def __init__(self, missile_Img, x, y, degree, speed):
         pygame.sprite.Sprite.__init__(self)
-        missile_Img = pygame.image.load(os.path.join("Image", "MissileRed.png")).convert()
         missile_Img_mini = pygame.transform.scale(missile_Img, (25, 25))
         self.image = missile_Img_mini
         self.image.set_colorkey((0,0,0))

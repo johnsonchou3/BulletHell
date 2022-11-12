@@ -108,7 +108,10 @@ while running:
         missile = player.shoot()
         allSprites.add(missile)
         playerMissiles.add(missile)
-
+    if count % 100 == 0:
+        missiles = boss.shoot_AllRound()
+        allSprites.add(missiles)
+        enemyMissiles.add(missiles)
     # changes num of missiles the boss shoots at a time
     if count % 300 == 0:
         boss.change_missile_count()
