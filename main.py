@@ -26,7 +26,8 @@ playerBombImage_mini = pygame.transform.scale(playerBombImage, (25, 19))
 playerBombImage_mini.set_colorkey((255,255,255))
 background = pygame.image.load(os.path.join("Image", "BG1.jpg")).convert()
 background_enlarge = pygame.transform.scale(background, (1000, 1000))
-
+background_red = pygame.transform.scale(background, (1000, 1000))
+background_red.fill((200,0,255), special_flags=pygame.BLEND_MIN)
 
 pygame.mixer.music.load(os.path.join("Sound","BGM1.mp3"))
 pygame.mixer.music.set_volume(0.4)
@@ -47,6 +48,7 @@ allSprites.add(boss)
 enemies.add(boss)
 
 screen_shake = 0
+red_effect = 0
 
 pygame.mixer.music.play(-1)
 
@@ -126,16 +128,19 @@ while running:
         allSprites.add(expl)
     hitOnPlayer = pygame.sprite.spritecollide(player, enemyMissiles, True)
     if hitOnPlayer:
-        screen_shake = 20
+        red_effect = 10
+        screen_shake = 50
         player.Hp -= len(hitOnPlayer)
 
     #Render Graphics
-    if screen_shake:
-        screen_shake -= 1
     render_offset = [0,0]
     if screen_shake:
+        screen_shake -= 1
         render_offset[0] = random.randint(0, 8) - 4
         render_offset[1] = random.randint(0, 8) - 4
+    if red_effect:
+        red_effect -= 1
+        screen.fill((255,0,0))
     screen.blit(background_enlarge, render_offset)
     allSprites.draw(screen)
     draw_player_health(screen, player.Hp, playerHpImage_mini, Settings.Height - 100, 50)
