@@ -34,3 +34,10 @@ class Boss(pygame.sprite.Sprite):
 
     def change_missile_count(self):
         self.missile_count = randint(2, 6)
+
+    def shoot_AllRound(self):
+        missiles = []
+        for i in range(360):
+            degree = i
+            missiles.append(EnemyMissile(self.rect.centerx, self.rect.centery, degree, 2))
+        return missiles

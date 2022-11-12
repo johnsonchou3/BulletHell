@@ -1,3 +1,5 @@
+import os
+
 import pygame
 import math
 from Settings import Settings
@@ -6,8 +8,10 @@ from Settings import Settings
 class EnemyMissile(pygame.sprite.Sprite):
     def __init__(self, x, y, degree, speed):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((5,5))
-        self.image.fill((200,0,0))
+        missile_Img = pygame.image.load(os.path.join("Image", "MissileRed.png")).convert()
+        missile_Img_mini = pygame.transform.scale(missile_Img, (25, 25))
+        self.image = missile_Img_mini
+        self.image.set_colorkey((0,0,0))
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
         self.x_velocity, self.y_velocity = self.calculate_xy_velocity(degree, speed)
@@ -24,5 +28,3 @@ class EnemyMissile(pygame.sprite.Sprite):
     def calculate_xy_velocity(self, degree, speed):
         radian = math.radians(degree)
         return round(speed*math.cos(radian)), round(speed*math.sin(radian))
-    
-        

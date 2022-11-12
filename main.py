@@ -5,6 +5,7 @@ import pygame
 
 from Sprite.Boss import Boss
 from Sprite.EnemyMissile import EnemyMissile
+from Sprite.Explosion import Explosion
 from Sprite.Player import Player
 from Settings import Settings
 pygame.init()
@@ -25,6 +26,7 @@ playerBombImage_mini = pygame.transform.scale(playerBombImage, (25, 19))
 playerBombImage_mini.set_colorkey((255,255,255))
 background = pygame.image.load(os.path.join("Image", "BG1.jpg")).convert()
 background_enlarge = pygame.transform.scale(background, (1000, 1000))
+
 
 pygame.mixer.music.load(os.path.join("Sound","BGM1.mp3"))
 pygame.mixer.music.set_volume(0.4)
@@ -48,9 +50,7 @@ screen_shake = 0
 
 pygame.mixer.music.play(-1)
 
-def tintDamage(surface, scale):
-    GB = min(255, max(0, round(255 * (1-scale))))
-    surface.fill((255, GB, GB), special_flags = pygame.BLEND_MULT)
+
 def draw_player_health(surface, hp, img, x, y):
     for i in range(hp):
         img_rect = img.get_rect()
@@ -108,7 +108,7 @@ while running:
         missile = player.shoot()
         allSprites.add(missile)
         playerMissiles.add(missile)
-    
+
     # changes num of missiles the boss shoots at a time
     if count % 300 == 0:
         boss.change_missile_count()
@@ -116,11 +116,15 @@ while running:
     # Update Info
     allSprites.update()
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
-    boss.curHp -= len(hitsOnBoss)
+    for hitOnBoss in hitsOnBoss:
+        for x in hitsOnBoss[hitOnBoss]:
+            hitOnBoss.curHp -= 1
+            expl = Explosion(x.rect.center, 'sm')
+        allSprites.add(expl)
     hitOnPlayer = pygame.sprite.spritecollide(player, enemyMissiles, True)
     if hitOnPlayer:
-        tintDamage(screen, 1)
-    player.Hp -= len(hitOnPlayer)
+        screen_shake = 20
+        player.Hp -= len(hitOnPlayer)
 
     #Render Graphics
     if screen_shake:
@@ -137,6 +141,3 @@ while running:
     pygame.display.update()
 
     # See if game ends
-    if boss.curHp == 0 or player.Hp == 0:
-        running = False
-
