@@ -1,4 +1,6 @@
 import pygame
+
+from Sprite.Boss import Boss
 from Sprite.Player import Player
 from Settings import Settings
 
@@ -12,7 +14,9 @@ clock = pygame.time.Clock()
 
 allSprites = pygame.sprite.Group()
 player = Player()
+boss = Boss()
 allSprites.add(player)
+allSprites.add(boss)
 
 while running:
     clock.tick(FPS)
