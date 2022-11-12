@@ -13,8 +13,9 @@ class Boss(pygame.sprite.Sprite):
         self.image.fill((255,0,0))
         self.rect = self.image.get_rect()
         self.rect.center = (500,100)
+        self.maxHp = 500
+        self.curHp = self.maxHp
         self.missile_count = 2
-        self.Hp = 10000
         self.shooting_direction = 0
         self.settings = Settings()
 
