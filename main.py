@@ -49,7 +49,7 @@ while running:
         # elif event.type == pygame.KEYDOWN:
         #   if event.key == pygame.K_SPACE:
 
-    boss.shift_shooting_direction(0.01)
+    boss.shift_shooting_direction(1)
     
     if count % 4 == 0:
         missile = player.shoot()
