@@ -41,7 +41,7 @@ def draw_player_health(surface, hp, img, x, y):
 
 while running:
     count += 1
-    dt = clock.tick(FPS)
+    clock.tick(FPS)
     # Get Input
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -49,7 +49,7 @@ while running:
         # elif event.type == pygame.KEYDOWN:
         #   if event.key == pygame.K_SPACE:
     
-    boss.shift_shooting_direction(0.05*dt)
+    boss.shift_shooting_direction(0.1*clock.get_time())
 
     if count % 4 == 0:
         missile = player.shoot()
@@ -62,9 +62,8 @@ while running:
     
     # changes num of missiles the boss shoots at a time
     if count % 300 == 0:
-        boss.missile_count = randint(2, 8)
+        boss.missile_count = randint(2, 6)
 
-    print(count)
     # Update Info
     allSprites.update()
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
