@@ -64,12 +64,18 @@ while running:
     allSprites.update()
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
     boss.Hp -= len(hitsOnBoss)
-    if boss.Hp == 0:
-        running = False
+    hitOnPlayer = pygame.sprite.spritecollide(player, enemyMissiles, True)
+    print(player.Hp)
+    player.Hp -= len(hitOnPlayer)
+    print(player.Hp)
 
     #Render Graphics
     screen.fill((255,255,255))
     allSprites.draw(screen)
     draw_player_health(screen, player.Hp, playerHpImage_mini, Settings.Height - 100, 50)
     pygame.display.update()
+
+    # See if game ends
+    if boss.Hp == 0 or player.Hp == 0:
+        running = False
 
