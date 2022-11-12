@@ -26,6 +26,7 @@ enemyMissiles = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 player = Player()
 boss = Boss()
+
 allSprites.add(player)
 allSprites.add(boss)
 enemies.add(boss)
@@ -47,6 +48,9 @@ while running:
             running = False
         # elif event.type == pygame.KEYDOWN:
         #   if event.key == pygame.K_SPACE:
+
+    boss.shift_shooting_direction(0.01)
+    
     if count % 4 == 0:
         missile = player.shoot()
         allSprites.add(missile)

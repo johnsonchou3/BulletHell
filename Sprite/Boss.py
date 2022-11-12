@@ -12,15 +12,17 @@ class Boss(pygame.sprite.Sprite):
         self.image.fill((255,0,0))
         self.rect = self.image.get_rect()
         self.rect.center = (500,100)
-        self.settings = Settings()
         self.Hp = 10
+        self.shooting_direction = 0
+        self.settings = Settings()
 
     def shoot(self):
         missiles = []
 
-        for i in range(4):
-            missiles.append(EnemyMissile(self.rect.centerx, self.rect.centery, math.pi*i*0.5, 3))
+        for i in range(2):
+            radian = math.pi*i + self.shooting_direction
+            missiles.append(EnemyMissile(self.rect.centerx, self.rect.centery, radian, 2))
         return missiles
     
-    def rotate(self):
-        return
+    def shift_shooting_direction(self, radian):
+        self.shooting_direction += radian
