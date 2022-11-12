@@ -28,3 +28,9 @@ class Player(pygame.sprite.Sprite):
     def shoot(self):
         missle = PlayerMissile(self.rect.centerx, self.rect.top)
         return missle
+
+    def use_bomb(self, enemyMissles):
+        if self.BombCount > 0:
+            for missles in enemyMissles:
+                missles.kill()
+            self.BombCount -= 1

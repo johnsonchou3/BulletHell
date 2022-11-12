@@ -19,6 +19,9 @@ playerHpImage = pygame.image.load(os.path.join(".\Images", "PlayerHp.jpg")).conv
 playerHpImage_mini = pygame.transform.scale(playerHpImage, (25, 19))
 playerHpImage_mini.set_colorkey((255,255,255))
 pygame.display.set_icon(playerHpImage_mini)
+playerBombImage = pygame.image.load(os.path.join(".\Images", "Bomb.jpg")).convert()
+playerBombImage_mini = pygame.transform.scale(playerBombImage, (25, 19))
+playerBombImage_mini.set_colorkey((255,255,255))
 
 allSprites = pygame.sprite.Group()
 playerMissiles = pygame.sprite.Group()
@@ -34,6 +37,13 @@ enemies.add(boss)
 
 def draw_player_health(surface, hp, img, x, y):
     for i in range(hp):
+        img_rect = img.get_rect()
+        img_rect.x = x + 30*i
+        img_rect.y = y
+        surface.blit(img, img_rect)
+
+def draw_player_bomb(surface, bombCount, img, x, y):
+    for i in range(bombCount):
         img_rect = img.get_rect()
         img_rect.x = x + 30*i
         img_rect.y = y
@@ -57,9 +67,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        # elif event.type == pygame.KEYDOWN:
-        #   if event.key == pygame.K_SPACE:
-    
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_z:
+                player.use_bomb(enemyMissiles)
     boss.shift_shooting_direction(0.05*dt)
 
     if count % 4 == 0:
@@ -75,7 +85,6 @@ while running:
     if count % 300 == 0:
         boss.missile_count = randint(2, 8)
 
-    print(count)
     # Update Info
     allSprites.update()
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
@@ -87,6 +96,7 @@ while running:
     screen.fill((255,255,255))
     allSprites.draw(screen)
     draw_player_health(screen, player.Hp, playerHpImage_mini, Settings.Height - 100, 50)
+    draw_player_bomb(screen, player.BombCount, playerBombImage_mini, Settings.Height - 100, 100)
     draw_boss_health(screen, boss.curHp, boss.maxHp, 5, 15)
     pygame.display.update()
 
