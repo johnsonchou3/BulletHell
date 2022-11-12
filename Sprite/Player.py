@@ -1,6 +1,6 @@
 import pygame
 from Settings import Settings
-from Sprite.PlayerMissle import PlayerMissle
+from Sprite.PlayerMissile import PlayerMissile
 
 
 class Player(pygame.sprite.Sprite):
@@ -26,5 +26,5 @@ class Player(pygame.sprite.Sprite):
             self.rect.y -= 5
 
     def shoot(self):
-        missle = PlayerMissle(self.rect.centerx, self.rect.top)
+        missle = PlayerMissile(self.rect.centerx, self.rect.top)
         return missle

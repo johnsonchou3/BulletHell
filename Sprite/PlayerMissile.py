@@ -1,7 +1,7 @@
 import pygame
 
 
-class PlayerMissle(pygame.sprite.Sprite):
+class PlayerMissile(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((10,10))

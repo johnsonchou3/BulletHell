@@ -1,8 +1,8 @@
-import os
-
+from re import S
 import pygame
 
 from Sprite.Boss import Boss
+from Sprite.EnemyMissile import EnemyMissile
 from Sprite.Player import Player
 from Settings import Settings
 pygame.init()
@@ -14,10 +14,9 @@ screen = pygame.display.set_mode((Settings.Width, Settings.Height))
 running = True
 clock = pygame.time.Clock()
 
-hpImage = pygame.image.load(os.path.join("Images", "PlayerHp.jpg")).convert()
-
 allSprites = pygame.sprite.Group()
-playerMissles = pygame.sprite.Group()
+playerMissiles = pygame.sprite.Group()
+enemyMissiles = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 player = Player()
 boss = Boss()
@@ -42,16 +41,20 @@ while running:
         # elif event.type == pygame.KEYDOWN:
         #   if event.key == pygame.K_SPACE:
     if count % 4 == 0:
-        missle = player.shoot()
-        allSprites.add(missle)
-        playerMissles.add(missle)
+        missile = player.shoot()
+        allSprites.add(missile)
+        playerMissiles.add(missile)
+
+        boss_missiles = boss.shoot()
+        allSprites.add(boss_missiles)
+        enemyMissiles.add(boss_missiles)
+
     # Update Info
     allSprites.update()
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissles, False, True)
     boss.Hp -= len(hitsOnBoss)
     if boss.Hp == 0:
         running = False
-
 
     #Render Graphics
     screen.fill((255,255,255))
