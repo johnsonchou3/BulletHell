@@ -23,13 +23,15 @@ pygame.display.set_icon(playerHpImage_mini)
 playerBombImage = pygame.image.load(os.path.join("Image", "Bomb.jpg")).convert()
 playerBombImage_mini = pygame.transform.scale(playerBombImage, (25, 19))
 playerBombImage_mini.set_colorkey((255,255,255))
-background = pygame.image.load(os.path.join("Image", "background.png")).convert()
+background = pygame.image.load(os.path.join("Image", "BG1.jpg")).convert()
 background_enlarge = pygame.transform.scale(background, (1000, 1000))
 
 pygame.mixer.music.load(os.path.join("Sound","BGM1.mp3"))
-pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.set_volume(0.4)
 shoot_sound = pygame.mixer.Sound(os.path.join("Sound","shoot.wav"))
 shoot_sound.set_volume(0.1)
+bomb_sound = pygame.mixer.Sound(os.path.join("Sound","expl0.wav"))
+bomb_sound.set_volume(0.2)
 
 allSprites = pygame.sprite.Group()
 playerMissiles = pygame.sprite.Group()
@@ -45,6 +47,10 @@ enemies.add(boss)
 screen_shake = 0
 
 pygame.mixer.music.play(-1)
+
+def tintDamage(surface, scale):
+    GB = min(255, max(0, round(255 * (1-scale))))
+    surface.fill((255, GB, GB), special_flags = pygame.BLEND_MULT)
 def draw_player_health(surface, hp, img, x, y):
     for i in range(hp):
         img_rect = img.get_rect()
@@ -53,6 +59,7 @@ def draw_player_health(surface, hp, img, x, y):
         surface.blit(img, img_rect)
 
 def draw_player_bomb(surface, bombCount, img, x, y):
+
     for i in range(bombCount):
         img_rect = img.get_rect()
         img_rect.x = x + 30*i
@@ -69,6 +76,11 @@ def draw_boss_health(surf, hp, maxHp, x, y):
     fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
     pygame.draw.rect(surf, (0,255,0), fill_rect)
     pygame.draw.rect(surf, (255,255,255), outline_rect, 2)
+    font = pygame.font.Font('freesansbold.ttf', 20)
+    text = font.render('Boss: DIO', True, (100,100,100))
+    textRect = text.get_rect()
+    textRect.topleft = (x , y + 30)
+    surf.blit(text, textRect)
 
 while running:
     count += 1
@@ -83,6 +95,7 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z:
                 if player.use_bomb(enemyMissiles):
+                    bomb_sound.play()
                     screen_shake = 30
 
     boss.shift_shooting_direction(0.1*clock.get_time())
@@ -105,6 +118,8 @@ while running:
     hitsOnBoss = pygame.sprite.groupcollide(enemies, playerMissiles, False, True)
     boss.curHp -= len(hitsOnBoss)
     hitOnPlayer = pygame.sprite.spritecollide(player, enemyMissiles, True)
+    if hitOnPlayer:
+        tintDamage(screen, 1)
     player.Hp -= len(hitOnPlayer)
 
     #Render Graphics
@@ -114,7 +129,6 @@ while running:
     if screen_shake:
         render_offset[0] = random.randint(0, 8) - 4
         render_offset[1] = random.randint(0, 8) - 4
-
     screen.blit(background_enlarge, render_offset)
     allSprites.draw(screen)
     draw_player_health(screen, player.Hp, playerHpImage_mini, Settings.Height - 100, 50)
