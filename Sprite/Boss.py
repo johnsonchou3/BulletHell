@@ -1,5 +1,6 @@
 import pygame
 import math
+from math import pi
 from Settings import Settings
 from Sprite.EnemyMissile import EnemyMissile
 
@@ -13,16 +14,17 @@ class Boss(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (500,100)
         self.Hp = 10
+        self.missile_count = 2
         self.shooting_direction = 0
         self.settings = Settings()
 
     def shoot(self):
         missiles = []
-
-        for i in range(2):
-            radian = math.pi*i + self.shooting_direction
-            missiles.append(EnemyMissile(self.rect.centerx, self.rect.centery, radian, 2))
+        missiles_angle_offset = 360 / self.missile_count
+        for i in range(self.missile_count):
+            degree = i * missiles_angle_offset + self.shooting_direction
+            missiles.append(EnemyMissile(self.rect.centerx, self.rect.centery, degree, 2))
         return missiles
     
-    def shift_shooting_direction(self, radian):
-        self.shooting_direction += radian
+    def shift_shooting_direction(self, degree):
+        self.shooting_direction += degree
