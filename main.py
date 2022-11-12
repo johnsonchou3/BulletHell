@@ -1,6 +1,8 @@
+from re import S
 import pygame
 
 from Sprite.Boss import Boss
+from Sprite.EnemyMissles import EnemyMissle
 from Sprite.Player import Player
 from Settings import Settings
 
@@ -15,8 +17,11 @@ clock = pygame.time.Clock()
 allSprites = pygame.sprite.Group()
 player = Player()
 boss = Boss()
+enemyMissle = EnemyMissle(50, 50, 1.5, 3)
+
 allSprites.add(player)
 allSprites.add(boss)
+allSprites.add(enemyMissle)
 
 while running:
     clock.tick(FPS)
