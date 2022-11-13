@@ -1,19 +1,21 @@
 import os
 import random
-from random import randint
 import pygame
 
+from random import randint
+from Settings import Settings
 from Sprite.Boss import Boss
 from Sprite.EnemyMissile import EnemyMissile
 from Sprite.Explosion import Explosion
 from Sprite.Player import Player
-from Settings import Settings
+
+BOSS_SHOOT_EVENT = pygame.USEREVENT
+
 pygame.init()
-Settings = Settings()
-FPS = 60
+settings = Settings()
 count = 0
 pygame.display.set_caption("BulletHell")
-screen = pygame.display.set_mode((Settings.Width, Settings.Height))
+screen = pygame.display.set_mode((settings.Width, settings.Height))
 running = True
 clock = pygame.time.Clock()
 
@@ -47,11 +49,13 @@ allSprites.add(player)
 allSprites.add(boss)
 enemies.add(boss)
 
+# setting custom event timers
+pygame.time.set_timer(BOSS_SHOOT_EVENT, 100)
+
 screen_shake = 0
 red_effect = 0
 
 pygame.mixer.music.play(-1)
-
 
 def draw_player_health(surface, hp, img, x, y):
     for i in range(hp):
@@ -86,26 +90,25 @@ def draw_boss_health(surf, hp, maxHp, x, y):
 
 while running:
     count += 1
-    dt = clock.tick(FPS)
+    clock.tick(settings.FPS)
 
     # Get Input
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        # elif event.type == pygame.KEYDOWN:
-        #   if event.key == pygame.K_SPACE:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z:
                 if player.use_bomb(enemyMissiles):
                     bomb_sound.play()
                     screen_shake = 30
+        elif event.type == BOSS_SHOOT_EVENT:
+            shoot_sound.play()
+            boss_missiles = boss.shoot()
+            allSprites.add(boss_missiles)
+            enemyMissiles.add(boss_missiles)
 
     boss.shift_shooting_direction(0.1*clock.get_time())
-    if count % 4 == 0:
-        shoot_sound.play()
-        boss_missiles = boss.shoot()
-        allSprites.add(boss_missiles)
-        enemyMissiles.add(boss_missiles)
+
     if count % 6 == 0:
         missile = player.shoot()
         allSprites.add(missile)

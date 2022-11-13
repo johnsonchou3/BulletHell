@@ -7,27 +7,26 @@ from pygame.math import Vector2
 
 MAX_FORCE = 0.1
 MAX_SPEED = 3
-IN_PLACE_MIN_ACC = 0.001
+IN_PLACE_MIN_DIS = 2
 
 class Boss(pygame.sprite.Sprite):
-    settings = Settings()
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        self.settings = Settings()
         boss_image =  pygame.image.load(os.path.join("Image", "Boss.jpg")).convert()
         boss_image_mini = pygame.transform.scale(boss_image, (100, 100))
         self.image = boss_image_mini
         self.image.set_colorkey((255,255,255))
         self.rect = self.image.get_rect()
-        self.rect.center = (500,100)
+        self.rect.center = (self.settings.Width // 2, self.settings.Width // 5)
         self.maxHp = 500
         self.curHp = self.maxHp
         self.missile_count = 2
         self.shooting_direction = 0
         self.velocity = Vector2(0, 0)
         self.acceleration = Vector2(0, 0)
-        self.target = (300, 50)
+        self.target = self.rect.center
         self.is_in_place = False
-        self.settings = Settings()
 
     def shoot(self):
         missiles = []
@@ -72,5 +71,10 @@ class Boss(pygame.sprite.Sprite):
             self.rect.centery += self.velocity.y
 
         # TODO: is_in_place should be determined by position(target) not acc
-        if self.acceleration.length() < IN_PLACE_MIN_ACC:
+        # if self.acceleration.length() < IN_PLACE_MIN_ACC:
+        #     self.is_in_place = True
+
+        position = Vector2(self.rect.centerx, self.rect.centery)
+
+        if (Vector2(self.target - position).length() < IN_PLACE_MIN_DIS):
             self.is_in_place = True
