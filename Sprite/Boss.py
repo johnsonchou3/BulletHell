@@ -54,7 +54,7 @@ class Boss(pygame.sprite.Sprite):
 
         # avoid normalizing by zero
         if (target - position).length() == 0:
-            return (0, 0)
+            return Vector2(0, 0)
 
         desired = (target - position).normalize() * MAX_SPEED
         steer = desired - self.velocity
