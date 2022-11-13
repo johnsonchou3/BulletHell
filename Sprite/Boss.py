@@ -6,7 +6,7 @@ from Sprite.EnemyMissile import EnemyMissile
 from pygame.math import Vector2
 
 MAX_FORCE = 0.1
-MAX_SPEED = 2
+MAX_SPEED = 3
 IN_PLACE_MIN_ACC = 0.001
 
 class Boss(pygame.sprite.Sprite):
@@ -69,5 +69,6 @@ class Boss(pygame.sprite.Sprite):
             self.rect.centerx += self.velocity.x
             self.rect.centery += self.velocity.y
 
+        # TODO: is_in_place should be determined by position(target) not acc
         if self.acceleration.length() < IN_PLACE_MIN_ACC:
             self.is_in_place = True

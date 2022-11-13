@@ -119,9 +119,12 @@ while running:
         boss.change_missile_count()
     
     # change boss movement
-    if count % 500 == 0:
+    if count % 400 == 0:
         boss.is_in_place = False
-        boss.target = (randint(30, Settings.Width - 30), randint(30, Settings.Height - 30))
+        # limit boss movement in upper bound
+        new_target_x = randint(30, Settings.Width - 30)
+        new_target_y = randint(30, Settings.Height // 3)
+        boss.target = (new_target_x, new_target_y)
 
     # Update Info
     allSprites.update()
