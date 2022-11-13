@@ -10,6 +10,7 @@ from Sprite.Explosion import Explosion
 from Sprite.Player import Player
 
 BOSS_SHOOT_EVENT = pygame.USEREVENT
+PLAYER_SHOOT_EVENT = pygame.USEREVENT + 1
 
 pygame.init()
 settings = Settings()
@@ -53,6 +54,7 @@ enemies.add(boss)
 
 # setting custom event timers
 pygame.time.set_timer(BOSS_SHOOT_EVENT, 100)
+pygame.time.set_timer(PLAYER_SHOOT_EVENT, 100)
 
 screen_shake = 0
 red_effect = 0
@@ -147,13 +149,13 @@ while running:
             boss_missiles = boss.shoot()
             allSprites.add(boss_missiles)
             enemyMissiles.add(boss_missiles)
+        elif event.type == PLAYER_SHOOT_EVENT:
+            missile = player.shoot()
+            allSprites.add(missile)
+            playerMissiles.add(missile)
 
     boss.shift_shooting_direction(0.1*clock.get_time())
 
-    if count % 6 == 0:
-        missile = player.shoot()
-        allSprites.add(missile)
-        playerMissiles.add(missile)
     if count % 200 == 0:
         missiles = boss.shoot_AllRound()
         allSprites.add(missiles)
