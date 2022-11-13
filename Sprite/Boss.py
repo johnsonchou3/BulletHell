@@ -70,11 +70,6 @@ class Boss(pygame.sprite.Sprite):
             self.rect.centerx += self.velocity.x
             self.rect.centery += self.velocity.y
 
-        # TODO: is_in_place should be determined by position(target) not acc
-        # if self.acceleration.length() < IN_PLACE_MIN_ACC:
-        #     self.is_in_place = True
-
         position = Vector2(self.rect.centerx, self.rect.centery)
-
         if (Vector2(self.target - position).length() < IN_PLACE_MIN_DIS):
             self.is_in_place = True
