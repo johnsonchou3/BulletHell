@@ -44,7 +44,7 @@ class Boss(pygame.sprite.Sprite):
         missiles = []
         for i in range(360):
             degree = i
-            missiles.append(EnemyMissile(pygame.image.load(os.path.join("Image", "MissileGreen.png")).convert(), self.rect.centerx, self.rect.centery, degree, 2))
+            missiles.append(EnemyMissile(pygame.image.load(os.path.join("Image", "ArrowMissileGreen.png")).convert(), self.rect.centerx, self.rect.centery, degree, 2))
         return missiles
 
     def seek(self, target):

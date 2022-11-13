@@ -9,6 +9,7 @@ class EnemyMissile(pygame.sprite.Sprite):
     def __init__(self, missile_Img, x, y, degree, speed):
         pygame.sprite.Sprite.__init__(self)
         missile_Img_mini = pygame.transform.scale(missile_Img, (25, 25))
+        missile_Img_mini = pygame.transform.rotate(missile_Img_mini, -degree)
         self.image = missile_Img_mini
         self.image.set_colorkey((0,0,0))
         self.rect = self.image.get_rect()
