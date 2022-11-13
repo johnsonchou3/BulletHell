@@ -1,22 +1,22 @@
 import os
-
 import pygame
-
+from Settings import Settings
 
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, center, size):
         pygame.sprite.Sprite.__init__(self)
+        self.settings = Settings()
         self.size = size
         self.expl_anim = {}
         self.expl_anim['lg'] = []
         self.expl_anim['sm'] = []
         self.expl_anim['player'] = []
         for i in range(9):
-            expl_img = pygame.image.load(os.path.join("Image", f"expl{i}.png")).convert()
+            expl_img = pygame.image.load(os.path.join(self.settings.image_dir, f"expl{i}.png")).convert()
             expl_img.set_colorkey((0, 0, 0))
             self.expl_anim['lg'].append(pygame.transform.scale(expl_img, (75, 75)))
             self.expl_anim['sm'].append(pygame.transform.scale(expl_img, (30, 30)))
-            player_expl_img = pygame.image.load(os.path.join("Image", f"player_expl{i}.png")).convert()
+            player_expl_img = pygame.image.load(os.path.join(self.settings.image_dir, f"player_expl{i}.png")).convert()
             player_expl_img.set_colorkey((0, 0, 0))
             self.expl_anim['player'].append(player_expl_img)
         self.image = self.expl_anim[self.size][0]

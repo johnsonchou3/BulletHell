@@ -13,12 +13,12 @@ class Boss(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.settings = Settings()
-        boss_image =  pygame.image.load(os.path.join("Image", "Boss.jpg")).convert()
+        boss_image =  pygame.image.load(os.path.join(self.settings.image_dir, "Boss.jpg")).convert()
         boss_image_mini = pygame.transform.scale(boss_image, (100, 100))
         self.image = boss_image_mini
         self.image.set_colorkey((255,255,255))
         self.rect = self.image.get_rect()
-        self.rect.center = (self.settings.Width // 2, self.settings.Width // 5)
+        self.rect.center = (self.settings.width // 2, self.settings.width // 5)
         self.maxHp = 500
         self.curHp = self.maxHp
         self.missile_count = 2
@@ -33,7 +33,7 @@ class Boss(pygame.sprite.Sprite):
         missiles_angle_offset = 360 / self.missile_count
         for i in range(self.missile_count):
             degree = i * missiles_angle_offset + self.shooting_direction
-            missiles.append(EnemyMissile(pygame.image.load(os.path.join("Image", "MissileRed.png")).convert(), self.rect.centerx, self.rect.centery, degree, 5))
+            missiles.append(EnemyMissile(pygame.image.load(os.path.join(self.settings.image_dir, "MissileRed.png")).convert(), self.rect.centerx, self.rect.centery, degree, 5))
         return missiles
     
     def shift_shooting_direction(self, degree):
@@ -47,7 +47,7 @@ class Boss(pygame.sprite.Sprite):
         missiles = []
         for i in range(360):
             degree = i
-            missiles.append(EnemyMissile(pygame.image.load(os.path.join("Image", "MissileGreen.png")).convert(), self.rect.centerx, self.rect.centery, degree, 2))
+            missiles.append(EnemyMissile(pygame.image.load(os.path.join(self.settings.image_dir, "MissileGreen.png")).convert(), self.rect.centerx, self.rect.centery, degree, 2))
         return missiles
 
     def seek(self, target):

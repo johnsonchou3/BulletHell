@@ -1,5 +1,3 @@
-import os
-
 import pygame
 import math
 from Settings import Settings
@@ -19,7 +17,7 @@ class EnemyMissile(pygame.sprite.Sprite):
 
     def update(self):
         # dispose if out of screen
-        if self.rect.centerx < 0 or self.rect.centerx > self.settings.Width or self.rect.centery < 0 or self.rect.centery > self.settings.Height:
+        if self.rect.centerx < 0 or self.rect.centerx > self.settings.width or self.rect.centery < 0 or self.rect.centery > self.settings.height:
             self.kill()
         # moves at corresponding direction
         self.rect.x += self.x_velocity

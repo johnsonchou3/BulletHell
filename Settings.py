@@ -1,4 +1,7 @@
 class Settings:
-    Width = 1000
-    Height = 1000
-    FPS = 60
+    width = 1000
+    height = 1000
+    fps = 60
+    image_dir = "./Assets/Image"
+    sound_dir = "./Assets/Sound"
+    font_dir = "./Assets/Font"
