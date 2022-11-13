@@ -28,8 +28,10 @@ playerBombImage_mini = pygame.transform.scale(playerBombImage, (25, 19))
 playerBombImage_mini.set_colorkey((255,255,255))
 background = pygame.image.load(os.path.join("Image", "BG1.jpg")).convert()
 background_enlarge = pygame.transform.scale(background, (1000, 1000))
-background_red = pygame.transform.scale(background, (1000, 1000))
-background_red.fill((200,0,255), special_flags=pygame.BLEND_MIN)
+
+init_background = pygame.image.load(os.path.join("Image", "BG3.jpg")).convert()
+init_background_enlarge = pygame.transform.scale(init_background, (1000, 1000))
+
 
 pygame.mixer.music.load(os.path.join("Sound","BGM1.mp3"))
 pygame.mixer.music.set_volume(0.4)
@@ -54,8 +56,8 @@ pygame.time.set_timer(BOSS_SHOOT_EVENT, 100)
 
 screen_shake = 0
 red_effect = 0
-
-pygame.mixer.music.play(-1)
+show_init = True
+dead = False
 
 def draw_player_health(surface, hp, img, x, y):
     for i in range(hp):
@@ -88,7 +90,45 @@ def draw_boss_health(surf, hp, maxHp, x, y):
     textRect.topleft = (x , y + 30)
     surf.blit(text, textRect)
 
+def draw_text(surf, text, size, x, y):
+    font = pygame.font.Font('freesansbold.ttf', size)
+    text_surface = font.render(text, True, (255,255,255))
+    text_rect = text_surface.get_rect()
+    text_rect.centerx = x
+    text_rect.top = y
+    surf.blit(text_surface, text_rect)
+def draw_init():
+    screen.blit(init_background_enlarge, (0,0))
+    draw_text(screen, 'Bullet Hell', 64, Settings.Width/2, Settings.Height/4)
+    draw_text(screen, 'Press direction key to move, use with shift to move slowly ', 22, Settings.Width/2, Settings.Height/2)
+    draw_text(screen, 'Press Z to use bomb to eliminate enemy missiles ', 22, Settings.Width/2, Settings.Height/2 + 50)
+    draw_text(screen, 'Press any key to start', 18, Settings.Width/2, Settings.Height*3/4)
+    pygame.display.update()
+    waiting = True
+    while waiting:
+        clock.tick(settings.FPS)
+        # Get Input
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            elif event.type == pygame.KEYUP:
+                waiting = False
+                pygame.mixer.music.play(-1)
+
 while running:
+    if show_init:
+        draw_init()
+        show_init = False
+        allSprites = pygame.sprite.Group()
+        playerMissiles = pygame.sprite.Group()
+        enemyMissiles = pygame.sprite.Group()
+        enemies = pygame.sprite.Group()
+        player = Player()
+        boss = Boss()
+
+        allSprites.add(player)
+        allSprites.add(boss)
+        enemies.add(boss)
     count += 1
     clock.tick(settings.FPS)
 
@@ -160,3 +200,5 @@ while running:
     pygame.display.update()
 
     # See if game ends
+    if player.Hp == 0:
+        dead = True
