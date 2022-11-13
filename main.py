@@ -119,7 +119,8 @@ while running:
         boss.change_missile_count()
     
     # change boss movement
-    if count % 200 == 0:
+    if count % 500 == 0:
+        boss.is_in_place = False
         boss.target = (randint(30, Settings.Width - 30), randint(30, Settings.Height - 30))
 
     # Update Info
@@ -133,7 +134,7 @@ while running:
     hitOnPlayer = pygame.sprite.spritecollide(player, enemyMissiles, True)
     if hitOnPlayer:
         red_effect = 10
-        screen_shake = 50
+        screen_shake = 20
         player.Hp -= len(hitOnPlayer)
 
     #Render Graphics

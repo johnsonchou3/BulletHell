@@ -6,7 +6,8 @@ from Sprite.EnemyMissile import EnemyMissile
 from pygame.math import Vector2
 
 MAX_FORCE = 0.1
-MAX_SPEED = 3
+MAX_SPEED = 2
+IN_PLACE_MIN_ACC = 0.001
 
 class Boss(pygame.sprite.Sprite):
     settings = Settings()
@@ -23,6 +24,7 @@ class Boss(pygame.sprite.Sprite):
         self.velocity = Vector2(0, 0)
         self.acceleration = Vector2(0, 0)
         self.target = (300, 50)
+        self.is_in_place = False
         self.settings = Settings()
 
     def shoot(self):
@@ -57,11 +59,15 @@ class Boss(pygame.sprite.Sprite):
         desired = (target - position).normalize() * MAX_SPEED
         steer = desired - self.velocity
         return steer
-
+    
     def update(self):
-        self.acceleration = self.seek(self.target)
-        self.velocity += self.acceleration
-        if self.velocity.length() > MAX_SPEED:
-            self.velocity.scale_to_length(MAX_SPEED)
-        self.rect.centerx += self.velocity.x
-        self.rect.centery += self.velocity.y
+        if self.is_in_place == False:
+            self.acceleration = self.seek(self.target)
+            self.velocity += self.acceleration
+            if self.velocity.length() > MAX_SPEED:
+                self.velocity.scale_to_length(MAX_SPEED)
+            self.rect.centerx += self.velocity.x
+            self.rect.centery += self.velocity.y
+
+        if self.acceleration.length() < IN_PLACE_MIN_ACC:
+            self.is_in_place = True
