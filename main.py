@@ -97,7 +97,7 @@ def draw_text(surf, text, size, x, y):
     text_rect.centerx = x
     text_rect.top = y
     surf.blit(text_surface, text_rect)
-    
+
 def draw_init():
     screen.blit(init_background_enlarge, (0,0))
     draw_text(screen, 'Bullet Hell', 64, Settings.width/2, Settings.height/4)
@@ -201,5 +201,5 @@ while running:
     pygame.display.update()
 
     # See if game ends
-    if boss.curHp == 0 or player.Hp == 0:
+    if boss.curHp <= 0 or player.Hp <= 0:
         running = False
