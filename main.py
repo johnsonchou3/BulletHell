@@ -115,6 +115,10 @@ while running:
     # changes num of missiles the boss shoots at a time
     if count % 300 == 0:
         boss.change_missile_count()
+    
+    # change boss movement
+    if count % 200 == 0:
+        boss.target = (randint(30, Settings.Width - 30), randint(30, Settings.Height - 30))
 
     # Update Info
     allSprites.update()
