@@ -13,8 +13,10 @@ class Boss(pygame.sprite.Sprite):
     settings = Settings()
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((50,40))
-        self.image.fill((255,0,0))
+        boss_image =  pygame.image.load(os.path.join("Image", "Boss.jpg")).convert()
+        boss_image_mini = pygame.transform.scale(boss_image, (100, 100))
+        self.image = boss_image_mini
+        self.image.set_colorkey((255,255,255))
         self.rect = self.image.get_rect()
         self.rect.center = (500,100)
         self.maxHp = 500
